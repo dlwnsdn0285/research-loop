@@ -1,0 +1,20 @@
+history_root: research_runs_history
+
+approval:
+  before_plan_commit: true
+  before_execution: true
+
+raw_results:
+  immutable_after_results_ready: true
+  required_artifacts:
+    - raw/config.yaml
+    - raw/metrics.json
+    - raw/stdout.log
+
+reasoning:
+  policy: none
+  mode: full
+
+providers:
+  codex: true
+  claude: true
