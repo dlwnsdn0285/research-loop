@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "research-loop"
+version = "0.1.0"
+description = "A Git-backed protocol for traceable LLM-assisted research"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Junwoo Lee" }]
+dependencies = ["PyYAML>=6.0"]
+
+[project.scripts]
+research-loop = "research_loop.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["research_loop*"]
