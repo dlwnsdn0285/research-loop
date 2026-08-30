@@ -1,0 +1,18 @@
+run_id: expNN_slug
+created_date: YYYY-MM-DD
+parent_run: null
+status: PLAN_READY
+approval:
+  plan_approved: false
+  approved_at: null
+provenance:
+  branch: null
+  code_commit_sha: null
+  command: null
+  dataset: null
+  split: null
+  model_or_checkpoint: null
+  seeds: []
+artifacts:
+  missing: []
+updated_at: null
