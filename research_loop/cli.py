@@ -24,16 +24,35 @@ def copy_if_missing(src: Path, dst: Path) -> None:
         shutil.copy2(src, dst)
 
 
+def copy_tree_if_missing(src_dir: Path, dst_dir: Path) -> None:
+    if not src_dir.exists():
+        return
+    for src in src_dir.rglob("*"):
+        if src.is_file():
+            rel = src.relative_to(src_dir)
+            copy_if_missing(src, dst_dir / rel)
+
+
 def cmd_init(args: argparse.Namespace) -> int:
     root = Path(args.path).resolve()
     root.mkdir(parents=True, exist_ok=True)
+
     copy_if_missing(PACKAGE_ROOT / "RESEARCH_PROTOCOL.md", root / "RESEARCH_PROTOCOL.md")
     copy_if_missing(PACKAGE_ROOT / "research-loop.yaml.example", root / "research-loop.yaml")
     copy_if_missing(PACKAGE_ROOT / "templates" / "AGENTS.md", root / "AGENTS.md")
     copy_if_missing(PACKAGE_ROOT / "templates" / "CLAUDE.md", root / "CLAUDE.md")
+
+    copy_tree_if_missing(PACKAGE_ROOT / "skills" / "codex", root / ".agents" / "skills")
+    copy_tree_if_missing(PACKAGE_ROOT / "skills" / "claude", root / ".claude" / "skills")
+    copy_if_missing(
+        PACKAGE_ROOT / ".github" / "workflows" / "validate-research-runs.yml",
+        root / ".github" / "workflows" / "validate-research-runs.yml",
+    )
+
     cfg = load_config(root)
     (root / cfg["history_root"]).mkdir(parents=True, exist_ok=True)
     print(f"[OK] initialized Research Loop in {root}")
+    print("[OK] installed protocol, agent instructions, provider skills, and CI validation")
     return 0
 
 
