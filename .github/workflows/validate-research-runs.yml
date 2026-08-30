@@ -1,0 +1,24 @@
+name: Validate research runs
+
+on:
+  push:
+    paths:
+      - 'research_runs_history/**'
+      - 'research-loop.yaml'
+      - 'RESEARCH_PROTOCOL.md'
+  pull_request:
+    paths:
+      - 'research_runs_history/**'
+      - 'research-loop.yaml'
+      - 'RESEARCH_PROTOCOL.md'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -e .
+      - run: research-loop validate --all
