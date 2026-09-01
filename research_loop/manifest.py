@@ -23,21 +23,38 @@ def write_manifest(run_dir: Path, data: dict) -> None:
 
 
 def new_manifest(run_id: str, created_date: str, parent_run: str | None = None) -> dict:
+    now = datetime.now(timezone.utc).isoformat()
     return {
+        "schema_version": 1,
         "run_id": run_id,
-        "created_date": created_date,
-        "parent_run": parent_run,
+        "name": run_id,
         "status": "PLAN_READY",
-        "approval": {"plan_approved": False, "approved_at": None},
-        "provenance": {
-            "branch": None,
+        "created_at": now,
+        "updated_at": now,
+        "parent_run": {"run_id": parent_run, "path": None},
+        "files": {
+            "plan": "01_PLAN.md",
+            "raw_results": {"summary": "02_RESULTS_RAW.md", "artifacts": []},
+            "analysis": "03_ANALYSIS.md",
+            "critique": "04_CRITIQUE.md",
+        },
+        "experiment": {
             "code_commit_sha": None,
+            "branch": None,
             "command": None,
             "dataset": None,
+            "dataset_version": None,
             "split": None,
-            "model_or_checkpoint": None,
             "seeds": [],
         },
-        "artifacts": {"missing": []},
-        "updated_at": datetime.now(timezone.utc).isoformat(),
+        "approval": {"plan_approved": False, "approved_at": None},
+        "provenance": {
+            "plan_author": None,
+            "raw_author": "experiment_runner",
+            "analysis_author": None,
+            "critique_author": None,
+            "analysis_at": None,
+            "critique_at": None,
+        },
+        "notes": [],
     }

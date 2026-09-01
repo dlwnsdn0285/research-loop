@@ -39,6 +39,7 @@ def cmd_init(args: argparse.Namespace) -> int:
 
     copy_if_missing(PACKAGE_ROOT / "RESEARCH_PROTOCOL.md", root / "RESEARCH_PROTOCOL.md")
     copy_if_missing(PACKAGE_ROOT / "research-loop.yaml.example", root / "research-loop.yaml")
+    copy_tree_if_missing(PACKAGE_ROOT / "templates", root / "templates")
     copy_if_missing(PACKAGE_ROOT / "templates" / "AGENTS.md", root / "AGENTS.md")
     copy_if_missing(PACKAGE_ROOT / "templates" / "CLAUDE.md", root / "CLAUDE.md")
 
@@ -52,7 +53,7 @@ def cmd_init(args: argparse.Namespace) -> int:
     cfg = load_config(root)
     (root / cfg["history_root"]).mkdir(parents=True, exist_ok=True)
     print(f"[OK] initialized Research Loop in {root}")
-    print("[OK] installed protocol, agent instructions, provider skills, and CI validation")
+    print("[OK] installed protocol, templates, agent instructions, provider skills, and CI validation")
     return 0
 
 
@@ -77,8 +78,10 @@ def cmd_new(args: argparse.Namespace) -> int:
     run_dir = day_dir / run_name
     run_dir.mkdir(parents=True, exist_ok=False)
     (run_dir / "raw").mkdir()
-    shutil.copy2(PACKAGE_ROOT / "templates" / "01_PLAN.md", run_dir / "01_PLAN.md")
-    write_manifest(run_dir, new_manifest(run_name, day, args.parent))
+    shutil.copy2(root / "templates" / "01_PLAN.md", run_dir / "01_PLAN.md")
+    manifest = new_manifest(run_name, day, args.parent)
+    manifest["name"] = args.name
+    write_manifest(run_dir, manifest)
     print(run_dir)
     return 0
 

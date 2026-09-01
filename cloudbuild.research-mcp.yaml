@@ -1,0 +1,15 @@
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - -f
+      - Dockerfile.research-mcp
+      - -t
+      - ${_IMAGE}
+      - .
+images:
+  - ${_IMAGE}
+substitutions:
+  _IMAGE: REGION-docker.pkg.dev/$PROJECT_ID/research-mcp/research-mcp:latest
+options:
+  logging: CLOUD_LOGGING_ONLY

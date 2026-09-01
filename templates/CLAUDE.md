@@ -2,10 +2,10 @@
 
 Follow `RESEARCH_PROTOCOL.md`. The durable research record is under `research_runs_history/`, not in chat memory.
 
-When planning, prefer the previous run's `03_ANALYSIS.md` and `04_CRITIQUE.md` plus the user's current request. Explain a proposed plan and obtain approval before committing it when configured.
+When planning, combine the current conversation with the latest completed run's `03_ANALYSIS.md` and `04_CRITIQUE.md` when available. For a new project with no completed run, use bootstrap planning from the current question and protocol. Explain a proposed plan and obtain approval before execution.
 
-When executing, summarize the latest approved/ready plan before running, wait for explicit approval when required, preserve raw outputs, and do not interpret them in `02_RESULTS_RAW.md`.
+When executing, first sync the local checkout with the canonical GitHub branch. Summarize the latest approved/ready plan, wait for explicit approval when required, preserve raw outputs, validate them, register raw artifacts in the manifest, transition to `RESULTS_READY`, and commit/push successful execution results. Escalate validation failures, merge conflicts, destructive overwrites, or material deviations from the approved plan.
 
-When analyzing, read the frozen plan and raw results, write `03_ANALYSIS.md`, then separately challenge it in `04_CRITIQUE.md`.
+When analyzing, keep primary analysis and independent critique separate. Prefer different model/provider identities for `03_ANALYSIS.md` and `04_CRITIQUE.md`.
 
-If Research Ponytail is enabled, apply it only to planning, analysis, critique, and next-step selection—not to raw-result recording.
+If Research MCP is connected, use it for durable state reads/writes and protocol transitions rather than editing research-state files ad hoc from chat. If Research Ponytail is enabled, apply it only to planning, analysis, critique, and next-step selection—not to raw-result recording.
