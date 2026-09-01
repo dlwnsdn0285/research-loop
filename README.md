@@ -195,11 +195,11 @@ Your research repository
 Coding Agent
 ```
 
-Use [`Dockerfile.research-mcp`](Dockerfile.research-mcp) and [`research_mcp/.env.remote.example`](research_mcp/.env.remote.example) as the starting point. Keep OAuth off only for local/stdio testing. Do not expose unauthenticated HTTP mode to the public internet.
+Use [`Dockerfile.research-mcp`](Dockerfile.research-mcp), [`cloudbuild.research-mcp.yaml`](cloudbuild.research-mcp.yaml), and [`research_mcp/.env.remote.example`](research_mcp/.env.remote.example) as the deployment starting point. A complete generic Google Cloud Run walkthrough is in [`research_mcp/CLOUD_RUN.md`](research_mcp/CLOUD_RUN.md).
 
-A narrowly scoped GitHub credential should have only the repository access required by your research project. Do not commit credentials, Cloud provider secrets, or private project identifiers.
+Keep OAuth off only for local/stdio testing. Do not expose unauthenticated HTTP mode to the public internet. A narrowly scoped GitHub credential should have only the repository access required by your research project. Do not commit credentials, Cloud provider secrets, or private project identifiers.
 
-See [`research_mcp/README.md`](research_mcp/README.md) for details.
+See [`research_mcp/README.md`](research_mcp/README.md) for MCP details.
 
 ## Coding Agent contract
 
