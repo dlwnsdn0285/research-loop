@@ -4,16 +4,23 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "research-loop"
-version = "0.1.0"
-description = "A Git-backed protocol for traceable LLM-assisted research"
+version = "0.2.0"
+description = "A Git-backed protocol and MCP layer for traceable LLM-assisted research"
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
 authors = [{ name = "Junwoo Lee" }]
 dependencies = ["PyYAML>=6.0"]
 
+[project.optional-dependencies]
+mcp = [
+  "mcp>=2,<3",
+  "PyJWT[crypto]>=2.9,<3",
+]
+
 [project.scripts]
 research-loop = "research_loop.cli:main"
+research-mcp = "research_mcp.server:main"
 
 [tool.setuptools.packages.find]
-include = ["research_loop*"]
+include = ["research_loop*", "research_mcp*"]
