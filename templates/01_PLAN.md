@@ -41,9 +41,15 @@
 
 ## 10. Required raw artifacts
 
-- `raw/config.yaml`
-- `raw/metrics.json`
-- `raw/stdout.log`
+Define what each retained raw artifact contains before execution. Descriptions must be factual metadata, not interpretation of what the result means.
+
+| Path | Type | Description |
+|---|---|---|
+| `raw/config.yaml` | config | Model, dataset, seed, and execution configuration used for the run. |
+| `raw/metrics.json` | metrics | Per-condition evaluation metrics and aggregate scores. |
+| `raw/stdout.log` | log | Standard output and error captured during experiment execution. |
+
+Add experiment-specific artifacts here when they are needed to verify planned claims, for example per-example predictions or intervention scores.
 
 ## 11. Stop / expand rule
 
