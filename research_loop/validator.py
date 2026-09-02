@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from .artifacts import artifact_path, validate_artifact_inventory
 from .config import load_config
 from .manifest import VALID_STATES, read_manifest
 
@@ -42,6 +43,22 @@ def validate_run(run_dir: Path, project_root: Path | None = None) -> list[str]:
         for rel in cfg.get("raw_results", {}).get("required_artifacts", []):
             if not (run_dir / rel).exists():
                 errors.append(f"missing required raw artifact: {rel}")
+
+        files = manifest.get("files", {}) or {}
+        raw = files.get("raw_results", {}) or {}
+        artifacts = raw.get("artifacts", []) or []
+        schema_version = manifest.get("schema_version", 1)
+        try:
+            schema_version = int(schema_version)
+        except (TypeError, ValueError):
+            errors.append(f"invalid schema_version: {schema_version}")
+            schema_version = 1
+
+        errors.extend(validate_artifact_inventory(artifacts, schema_version))
+        for artifact in artifacts:
+            path = artifact_path(artifact)
+            if path and not (run_dir / path).exists():
+                errors.append(f"missing registered raw artifact: {path}")
     return errors
 
 
