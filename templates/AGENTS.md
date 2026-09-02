@@ -23,7 +23,7 @@ When asked to run the latest experiment:
 6. After approval, record approval, transition to `RUNNING`, execute the approved plan, and preserve raw outputs.
 7. Run the planned validation/sanity checks. If validation fails or the plan must materially change, stop and escalate instead of inventing a new scientific direction.
 8. Generate `02_RESULTS_RAW.md` from observed outputs without scientific interpretation.
-9. Register retained raw artifact paths under `files.raw_results.artifacts` in `00_MANIFEST.yaml` and fill execution provenance such as commit, command, dataset/split, and seeds.
+9. Register every retained raw artifact under `files.raw_results.artifacts` in `00_MANIFEST.yaml` using `path`, `type`, and `description`. The description must state what data the file contains, not what the result proves or suggests. Example: `Per-example prediction, gold answer, and EM score.` Not: `Results showing that hop1 evidence is underused.` Fill execution provenance such as commit, command, dataset/split, and seeds.
 10. Validate the run, transition to `RESULTS_READY`, commit the run artifacts, and push them to the canonical GitHub branch.
 
 A successful, approved execution path may commit and push automatically. Human escalation is required for validation failure, merge conflicts, destructive overwrite, or any material deviation from the approved plan.

@@ -25,7 +25,7 @@ def write_manifest(run_dir: Path, data: dict) -> None:
 def new_manifest(run_id: str, created_date: str, parent_run: str | None = None) -> dict:
     now = datetime.now(timezone.utc).isoformat()
     return {
-        "schema_version": 1,
+        "schema_version": 2,
         "run_id": run_id,
         "name": run_id,
         "status": "PLAN_READY",

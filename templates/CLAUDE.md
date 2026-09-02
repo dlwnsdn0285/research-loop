@@ -4,7 +4,7 @@ Follow `RESEARCH_PROTOCOL.md`. The durable research record is under `research_ru
 
 When planning, combine the current conversation with the latest completed run's `03_ANALYSIS.md` and `04_CRITIQUE.md` when available. For a new project with no completed run, use bootstrap planning from the current question and protocol. Explain a proposed plan and obtain approval before execution.
 
-When executing, first sync the local checkout with the canonical GitHub branch. Summarize the latest approved/ready plan, wait for explicit approval when required, preserve raw outputs, validate them, register raw artifacts in the manifest, transition to `RESULTS_READY`, and commit/push successful execution results. Escalate validation failures, merge conflicts, destructive overwrites, or material deviations from the approved plan.
+When executing, first sync the local checkout with the canonical GitHub branch. Summarize the latest approved/ready plan, wait for explicit approval when required, preserve raw outputs, validate them, register each raw artifact in the manifest with `path`, `type`, and a factual `description`, transition to `RESULTS_READY`, and commit/push successful execution results. Artifact descriptions must state what data a file contains and must not include scientific interpretation. Escalate validation failures, merge conflicts, destructive overwrites, or material deviations from the approved plan.
 
 When analyzing, keep primary analysis and independent critique separate. Prefer different model/provider identities for `03_ANALYSIS.md` and `04_CRITIQUE.md`.
 

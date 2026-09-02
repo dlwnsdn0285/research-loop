@@ -24,6 +24,8 @@ PLANNING → PLAN_READY → PLAN_APPROVED → RUNNING → RESULTS_READY → ANAL
 
 The planner writes the research question, hypotheses, conditions, controls, metrics, expected outcome branches, stop/expand rule, and required raw artifacts before execution.
 
+For each planned raw artifact, define its path, type, and a factual description of what data it will contain. The description is metadata, not interpretation.
+
 Material changes after results are known should become a new run rather than silently rewriting the old plan.
 
 ## Executor
@@ -32,9 +34,26 @@ Before execution, the executor reads the manifest and plan, summarizes the exper
 
 The executor records measurements and provenance only. Files under `raw/` and `02_RESULTS_RAW.md` should not contain interpretation such as “this supports” or causal explanations.
 
+Every retained raw artifact in a schema-v2 run must be registered in `00_MANIFEST.yaml` as:
+
+```yaml
+files:
+  raw_results:
+    artifacts:
+      - path: raw/per_example.jsonl
+        type: per_example_results
+        description: Per-example predictions, gold answers, and evaluation scores.
+```
+
+Descriptions must answer “what data is in this file?” They must not answer “what does this result mean?”
+
+Legacy schema-v1 runs that store artifact paths as strings remain readable for backward compatibility.
+
 ## Analyst
 
 The analyst reads the frozen plan and observed results, maps results to predefined branches when possible, separates observations from inference, and writes `03_ANALYSIS.md`.
+
+When Research MCP is used, `load_analysis_context` and `load_critique_context` expose a normalized raw artifact inventory so the reasoning client can select the relevant evidence before calling `read_run_file`.
 
 ## Critic
 
