@@ -10,6 +10,7 @@ from zoneinfo import ZoneInfo
 
 import yaml
 
+from research_loop.artifacts import artifact_path, normalize_artifact_inventory, validate_artifact_inventory
 from .github_store import GitHubAPIError, GitHubStore
 
 ALLOWED_STATUSES = [
@@ -201,14 +202,16 @@ class ResearchService:
         record = self.latest_run(status)
         files = record.manifest.get("files", {}) or {}
         raw = files.get("raw_results", {}) or {}
+        artifacts = raw.get("artifacts", []) or []
         result = {
-            "usage": "Combine this durable state with the CURRENT CHAT. Read only raw artifacts needed to verify load-bearing claims using read_run_file().",
+            "usage": "Combine this durable state with the CURRENT CHAT. Use raw_artifact_inventory to choose only the raw files needed to verify load-bearing claims, then inspect them with read_run_file(). Artifact descriptions are factual metadata, not scientific interpretation.",
             "protocol": self.store.get_text("RESEARCH_PROTOCOL.md"),
             "run": self._run_summary(record),
             "manifest": record.manifest,
             "plan": self.store.get_text(f"{record.path}/{files.get('plan', '01_PLAN.md')}"),
             "raw_summary": self.store.get_text(f"{record.path}/{raw.get('summary', '02_RESULTS_RAW.md')}"),
-            "raw_artifacts": raw.get("artifacts", []) or [],
+            "raw_artifacts": artifacts,
+            "raw_artifact_inventory": normalize_artifact_inventory(artifacts),
         }
         if include_analysis:
             result["analysis"] = self.store.get_text(f"{record.path}/{files.get('analysis', '03_ANALYSIS.md')}")
@@ -309,7 +312,14 @@ class ResearchService:
         artifacts = raw.get("artifacts", []) or []
         if not artifacts:
             raise RuntimeError("No raw artifacts registered in manifest files.raw_results.artifacts")
+        try:
+            schema_version = int(manifest.get("schema_version", 1))
+        except (TypeError, ValueError):
+            raise RuntimeError(f"Invalid schema_version: {manifest.get('schema_version')}")
+        metadata_errors = validate_artifact_inventory(artifacts, schema_version)
+        if metadata_errors:
+            raise RuntimeError("Invalid raw artifact registry: " + "; ".join(metadata_errors))
         for artifact in artifacts:
-            path = artifact.get("path") if isinstance(artifact, dict) else artifact
+            path = artifact_path(artifact)
             if not path or not self.store.exists(f"{record.path}/{path}"):
                 raise RuntimeError(f"Missing registered raw artifact: {path}")
