@@ -17,6 +17,30 @@ jobs:
         run: python -m pip install -e '.[mcp]'
       - name: Compile Python packages
         run: python -m compileall -q research_loop research_mcp
+      - name: Test artifact metadata compatibility
+        run: |
+          python - <<'PY'
+          from research_loop.artifacts import normalize_artifact_inventory, validate_artifact_inventory
+
+          legacy = ["raw/metrics.json"]
+          assert validate_artifact_inventory(legacy, 1) == []
+          normalized = normalize_artifact_inventory(legacy)
+          assert normalized[0]["legacy_entry"] is True
+          assert normalized[0]["metadata_complete"] is False
+
+          current = [{
+              "path": "raw/metrics.json",
+              "type": "metrics",
+              "description": "Per-condition evaluation metrics and aggregate scores.",
+          }]
+          assert validate_artifact_inventory(current, 2) == []
+          normalized = normalize_artifact_inventory(current)
+          assert normalized[0]["metadata_complete"] is True
+
+          invalid = [{"path": "raw/metrics.json", "type": "metrics", "description": ""}]
+          assert validate_artifact_inventory(invalid, 2)
+          assert validate_artifact_inventory(["raw/metrics.json"], 2)
+          PY
       - name: Smoke test local CLI
         run: |
           PROJECT="$(mktemp -d)/research-project"
