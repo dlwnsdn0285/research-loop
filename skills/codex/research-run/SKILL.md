@@ -11,5 +11,6 @@ description: Execute the latest Research Loop experiment with a mandatory summar
 4. Before execution, explain the experiment purpose, conditions, controls, metrics, implementation plan, commands, and artifacts.
 5. If explicit approval has not been recorded, stop and ask for it. Never infer approval from previous discussion.
 6. After approval, update the manifest, run the experiment, save raw machine-readable outputs, and produce `02_RESULTS_RAW.md` without interpretation.
-7. Validate the run. Set `RESULTS_READY` only when required artifacts exist.
-8. Do not create `03_ANALYSIS.md` or `04_CRITIQUE.md` while acting as executor.
+7. Register every retained raw artifact in `files.raw_results.artifacts` with `path`, `type`, and a factual `description` of what data the file contains. Do not put scientific conclusions in artifact descriptions.
+8. Validate the run. Set `RESULTS_READY` only when required artifacts exist and the artifact registry is valid.
+9. Do not create `03_ANALYSIS.md` or `04_CRITIQUE.md` while acting as executor.
